@@ -1,212 +1,87 @@
-# Project
-Student Attendance Management System (Python + MySQL + Tkinter)
-A desktop application for managing student registration and daily attendance with a simple teacher login. Built with Python, Tkinter for the GUI, and MySQL as the database backend.
+#📘 Student Attendance & Management System (Python + MySQL)
+A desktop-based GUI application built using Python (Tkinter) and MySQL to manage students, track attendance, and generate attendance records efficiently.
 
-Key features
-Teacher authentication with a default admin account.
+#🚀 Features
+🔐 Secure Teacher Login
+👨‍🎓 Student Registration (Name, Roll No, Class)
+✔ Mark Daily Attendance (Present/Absent)
+📊 View Attendance Records
+🗄 MySQL Database Storage
+📁 Organized Code Structure
+🎯 Error handling & form validation
 
-Register students with name, roll number, and class.
+#🛠 Tech Stack
+1]Component	Technology
+2]Language	Python
+3]GUI	Tkinter
+4]Database	MySQL
+5]Connector	mysql-connector-python
 
-Mark daily attendance as present/absent via a checklist UI.
+#📂 Project Structure
+attendance-system/
+│── database.py              # DB connection & table creation
+│── auth.py                  # Teacher login authentication
+│── student.py               # Student registration & fetching
+│── attendance.py            # Mark attendance & calculations
+│── gui.py                   # Tkinter GUI
+│── main.py                  # Application entry point
+│── config.py                # Database credentials
+│── README.md                # Documentation
 
-View attendance records joined with student details in a tabular view.
+#🗄️ Database Schema
+#teachers
+Field	Type	Description
+id	INT	Primary Key
+username	VARCHAR(50)	Login username
+password	VARCHAR(255)	Login password
 
-Tech stack
-Python 3.x, Tkinter (GUI)
+#students
+Field	Type	Description
+id	INT	Student ID
+name	VARCHAR(100)	Full Name
+roll_no	VARCHAR(20)	Unique Roll Number
+class	VARCHAR(50)	Class/Division
 
-MySQL, mysql-connector-python
+#attendance
+Field	Type	Description
+id	INT	Attendance entry ID
+student_id	INT	FK referencing students
+date	DATE	Attendance date
+status	ENUM('present', 'absent')	Attendance status
 
-Project structure
-database.py
+#▶️ How to Run
+1. Install required packages
+pip install mysql-connector-python
 
-Creates database and tables, manages DB connections.
-
-auth.py
-
-Teacher authentication and default admin seeding.
-
-student.py
-
-Student registration and retrieval.
-
-attendance.py
-
-Mark attendance, compute attendance percentage, fetch attendance records.
-
-gui.py
-
-Tkinter application frames: login, main menu, register student, mark attendance, view records.
-
-config.py
-
-Centralized DB_CONFIG dictionary with connection parameters.
-
-main.py
-
-Entry point: initialize DB, seed default admin, launch GUI.
-
-Note: If your current code is in a single file, consider refactoring into the above modules for maintainability; names here match the imports already present in the shared code.
-
-Prerequisites
-Python 3.9+ installed.
-
-MySQL Server running locally or remotely.
-
-A MySQL user with privileges to create databases and tables.
-
-Installation
-Clone the repository
-
-git clone https://github.com/your-username/attendance-system.git
-
-cd attendance-system
-
-Create a virtual environment
-
-python -m venv .venv
-
-On Windows: .venv\Scripts\activate
-
-On macOS/Linux: source .venv/bin/activate
-
-Install dependencies
-
-pip install -r requirements.txt
-
-Sample requirements.txt:
-
-mysql-connector-python
-
-python-dotenv (optional, if using .env)
-
-Configuration
-Create config.py at the project root with your MySQL credentials:
-
+2. Update MySQL credentials in config.py
 DB_CONFIG = {
-'host': 'localhost',
-'user': 'root',
-'password': 'your_password',
-'database': 'attendance_system'
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'YourPassword',
+    'database': 'attendance_system'
 }
 
-Security tips:
-
-Do not commit real credentials to GitHub; use environment variables or .env with python-dotenv for production.
-
-Replace plaintext admin password with a hashed password (e.g., bcrypt) and parameterized queries (already used).
-
-Optional .env approach:
-
-DB_HOST=localhost
-
-DB_USER=root
-
-DB_PASSWORD=your_password
-
-DB_NAME=attendance_system
-
-Then load into config.py:
-
-from os import getenv
-
-from dotenv import load_dotenv
-
-load_dotenv()
-
-DB_CONFIG = {
-'host': getenv('DB_HOST', 'localhost'),
-'user': getenv('DB_USER', 'root'),
-'password': getenv('DB_PASSWORD', ''),
-'database': getenv('DB_NAME', 'attendance_system')
-}
-
-Database schema
-teachers
-
-id INT PK AUTO_INCREMENT
-
-username VARCHAR(50) UNIQUE NOT NULL
-
-password VARCHAR(255) NOT NULL
-
-students
-
-id INT PK AUTO_INCREMENT
-
-name VARCHAR(100) NOT NULL
-
-roll_no VARCHAR(20) UNIQUE NOT NULL
-
-class VARCHAR(50) NOT NULL
-
-attendance
-
-id INT PK AUTO_INCREMENT
-
-student_id INT NOT NULL FK -> students(id)
-
-date DATE NOT NULL
-
-status ENUM('present', 'absent') NOT NULL
-
-Constraints/notes:
-
-Foreign key from attendance.student_id to students.id.
-
-Consider a unique constraint on (student_id, date) to prevent duplicate daily entries.
-
-How it works
-Initialization
-
-On first run, the app creates the database (attendance_system) and required tables.
-
-Seeds a default teacher: username admin, password admin. Change immediately.
-
-Authentication
-
-Login screen checks credentials in teachers table.
-
-Student management
-
-Register students with Name, Roll No, Class; Roll No is unique.
-
-Attendance
-
-Mark today’s attendance as present/absent per student using checkboxes.
-
-View attendance records with student name, roll, class, date, and status.
-
-Running the app
+3. Run the application
 python main.py
 
-Default credentials
-
-Username: admin
-
+Default Login
+Username: admin  
 Password: admin
 
-Change the admin password after first login by updating the record in the teachers table or adding a UI for password change.
+#📸 Screenshots
 
-Screens and flows
-Login: Enter teacher username and password.
+(Add images here after uploading them to GitHub)
 
-Main menu: Register Student, Mark Attendance, View Attendance Records, Logout.
+#🧪 Testing Performed
+Unit testing of all modules
+Integration testing with database
+GUI testing (Tkinter widget behavior)
+Login authentication validation
+Attendance submission tests
 
-Register Student: Inputs for Name, Roll No, Class, then Save.
-
-Mark Attendance: List of students with checkboxes defaulting to absent; submit to save today’s attendance.
-
-View Records: Table view (Treeview) of historical attendance joined with student details.
-
-Common issues and fixes
-MySQL connection error: Ensure MySQL service is running and credentials in config.py are correct.
-
-Import errors: Verify files match module names used in imports (database.py, auth.py, student.py, attendance.py, gui.py, main.py).
-
-Duplicate roll number: Roll No must be unique; choose a new roll number or update the existing student.
-
-Duplicate attendance for a day: Add a unique index on (student_id, date) to prevent duplicates.
-
-SQL to enforce unique daily attendance:
-
-ALTER TABLE attendance ADD UNIQUE KEY uniq_student_date (student_id, date);
+#🚀 Future Enhancements
+Face recognition attendance
+Export records to Excel/PDF
+Multi-teacher login
+Attendance summary charts
+Cloud-based sync
